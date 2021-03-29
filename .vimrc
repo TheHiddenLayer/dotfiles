@@ -1,7 +1,7 @@
 " Syntax highlight
 syntax on
 
-" Sets
+" SETS
 set nu
 set colorcolumn=80
 set tabstop=4 softtabstop=4
@@ -28,7 +28,7 @@ set completeopt=menuone,noinsert,noselect
 set signcolumn=yes
 highlight ColorColumn ctermbg=0 guibg=lightgrey
 
-" Plugins
+" PLUG-INS 
 call plug#begin('~/.vim/plugged')
 
 Plug 'gruvbox-community/gruvbox'
@@ -44,27 +44,25 @@ Plug 'sbdchd/neoformat'
 
 call plug#end()
 
-" Colors
+" COLORS
 colorscheme gruvbox
 set background=dark
 
-" Functions
+" FUNCTIONS 
 if executable('rg')
     let g:rg_derive_root='true'
 endif
 
-" Autocommands
-autocmd BufWritePre *.js Neoformat
 
-" Remaps
+" REMAPS
 let g:ctrlp_user_command = ['.git/' , 'git --git-dir=%s/.git ls-files -oc --exclude-standard'] 
 let mapleader = " "
-let g:netrw_browse_split = 2
-let g:netrw_banner = 0
-let g:netrw_liststyle = 3
-let g:netrw_winsize = 25
 let g:ctrlp_use_caching = 0
 let g:ctrlp_map = '<leader>f'
+let g:netrw_banner = 0
+let g:netrw_liststyle = 3
+let g:netrw_browse_split = 4
+let g:netrw_altv = 1
 
 :imap jk <Esc>
 :imap kj <Esc>
@@ -76,9 +74,17 @@ nnoremap <leader>k :wincmd k<CR>
 nnoremap <leader>l :wincmd l<CR>
 nnoremap <leader>u :UndotreeShow<CR>
 nnoremap <leader>f :CtrlP<CR>
-nnoremap <leader>pv :wincmd v<bar> :Ex <bar> :vertical resize 30<CR>
+nnoremap <leader>e :wincmd v<bar> :Ex <bar> :vertical resize 25<CR>
 nnoremap <leader>ps :Rg<SPACE>
 nnoremap <leader>ghw :h <C-R>=expand("<cword>")<CR><CR>
 nnoremap <leader>prw :CocSearch <C-R>=expand("<cword>")<CR><CR>
 nnoremap <silent> <leader>- :vertical resize +15<CR>
 nnoremap <silent> <leader>+ :vertical resize -15<CR>
+
+" AUTO-COMMANDS 
+autocmd BufWritePre *.js Neoformat
+"augroup ProjectDrawer
+  "autocmd!
+  "autocmd VimEnter * :Vexplore
+"augroup END
+
