@@ -21,7 +21,7 @@ alias dro='cd ~/Code/Drover/'
 alias tse='cd ~/Code/TSE/'
 
 # --------- GIT -----------
-prefix="https://github.com/TheHiddenLayer/"
+prefix="https://github.com/ubhattac/"
 alias cm='git add . && git commit -am'
 alias st='git status'
 alias co='git checkout'
