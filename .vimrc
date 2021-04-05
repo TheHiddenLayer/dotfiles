@@ -1,9 +1,10 @@
 " Syntax highlight
 syntax on
-
 " --- SETS
+set exrc
 set nu
 set colorcolumn=80
+set termguicolors
 set tabstop=2 softtabstop=2
 set shiftwidth=2
 set scrolloff=8
@@ -21,15 +22,17 @@ set nohlsearch
 set expandtab
 set smartindent
 set updatetime=300
-set shortmess+=c
-set cmdheight=2
-set exrc
+set cmdheight=1
 set completeopt=menuone,noinsert,noselect
-set signcolumn=yes
+set signcolumn=number " or 'yes'
+set noshowmode
+set noshowcmd
+set shortmess+=F
 highlight ColorColumn ctermbg=0 guibg=lightgrey
 
 " --- PLUG-INS 
 call plug#begin('~/.vim/plugged')
+
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'pangloss/vim-javascript'    " JavaScript support
 Plug 'leafgarland/typescript-vim' " TypeScript syntax
@@ -39,16 +42,16 @@ Plug 'gruvbox-community/gruvbox'  " Colorscheme
 Plug 'jremmen/vim-ripgrep'        " RipGrep
 Plug 'tpope/vim-fugitive'         " git stuff
 Plug 'kien/ctrlp.vim'             " fast search
-Plug 'vim-utils/vim-man'          " also git stuff
 Plug 'lyuts/vim-rtags'            " great for c++
 Plug 'mbbill/undotree'            " epic undo history
+Plug 'vim-airline/vim-airline'    " status line
+Plug 'jiangmiao/auto-pairs'       " auto brackets
+
 call plug#end()
 
-" --- COLORS / GIT
+" --- COLORS 
 colorscheme gruvbox
 set background=dark
-"set laststatus=2
-set statusline=%<%f\ %h%m%r%{FugitiveStatusline()}%=%-14.(%l,%c%V%)\ %P
 
 " --- FUNCTIONS 
 if executable('rg')
@@ -56,6 +59,8 @@ if executable('rg')
 endif
 
 " --- REMAPS
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#formatter = 'unique_tail'
 let g:ctrlp_user_command = ['.git/' , 'git --git-dir=%s/.git ls-files -oc --exclude-standard'] 
 let mapleader = " "
 let g:ctrlp_use_caching = 0
@@ -64,6 +69,7 @@ let g:netrw_liststyle = 3
 let g:netrw_browse_split = 4
 let g:netrw_altv = 1
 let g:coc_global_extensions = [ 'coc-tsserver', 'coc-prettier' ] " TypeScript Support
+let g:gruvbox_sign_column='dark1'
 :imap jk <Esc>
 :imap kj <Esc>
 nnoremap <silent><leader>1 :source ~/.vimrc \| :PlugInstall<CR>
@@ -96,7 +102,3 @@ nnoremap rvg gD:%s/<C-R>///gc<left><left><left>
 
 " --- AUTO-COMMANDS 
 command! -nargs=0 Prettier :CocCommand prettier.formatFile
-"augroup ProjectDrawer
-"  autocmd!
-"  autocmd VimEnter * :Vexplore
-"augroup END
