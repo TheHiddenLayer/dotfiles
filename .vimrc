@@ -1,5 +1,6 @@
 " Syntax highlight
 syntax on
+
 " --- SETS
 set exrc
 set nu
@@ -24,13 +25,10 @@ set smartindent
 set updatetime=100
 set cmdheight=1
 set completeopt=menuone,noinsert,noselect
-set signcolumn=number "auto or yes"
+set signcolumn=yes "auto or number"
 set noshowmode
 set noshowcmd
 set shortmess+=F
-" highlight ColorColumn ctermbg=0 guibg=lightgrey
-" highlight clear ColorColumn
-" highlight clear SignColumn
 
 " --- PLUG-INS 
 call plug#begin('~/.vim/plugged')
@@ -52,9 +50,11 @@ Plug 'jiangmiao/auto-pairs'       " auto brackets
 call plug#end()
 
 " --- COLORS 
+highlight ColorColumn ctermbg=0 guibg=lightgrey
+highlight clear ColorColumn
+highlight clear SignColumn
 set termguicolors
-let g:gruvbox_italic=1
-" set background=dark
+set background=dark
 colorscheme gruvbox
 
 " --- FUNCTIONS 
@@ -95,7 +95,6 @@ nnoremap <leader>e :wincmd v<bar> :Ex <bar> :vertical resize 25<CR>
 nnoremap <silent> <leader>- :vertical resize +15<CR>
 nnoremap <silent> <leader>+ :vertical resize -15<CR>
 
-let g:fzf_preview_window = ['right:50%', 'ctrl-/']
 let g:fzf_buffers_jump = 1
 
 nnoremap <leader>f :Files<CR>
