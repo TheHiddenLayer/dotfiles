@@ -4,7 +4,7 @@ syntax on
 set exrc
 set nu
 set colorcolumn=80
-set termguicolors
+set cursorline
 set tabstop=2 softtabstop=2
 set shiftwidth=2
 set scrolloff=8
@@ -21,57 +21,66 @@ set incsearch
 set nohlsearch
 set expandtab
 set smartindent
-set updatetime=300
+set updatetime=100
 set cmdheight=1
 set completeopt=menuone,noinsert,noselect
-set signcolumn=number " or 'yes'
+set signcolumn=number "auto or yes"
 set noshowmode
 set noshowcmd
 set shortmess+=F
-highlight ColorColumn ctermbg=0 guibg=lightgrey
+" highlight ColorColumn ctermbg=0 guibg=lightgrey
+" highlight clear ColorColumn
+" highlight clear SignColumn
 
 " --- PLUG-INS 
 call plug#begin('~/.vim/plugged')
-
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'pangloss/vim-javascript'    " JavaScript support
-Plug 'leafgarland/typescript-vim' " TypeScript syntax
-Plug 'maxmellon/vim-jsx-pretty'   " JS and JSX syntax
-Plug 'jparise/vim-graphql'        " GraphQL syntax
-Plug 'gruvbox-community/gruvbox'  " Colorscheme
-Plug 'jremmen/vim-ripgrep'        " RipGrep
+Plug 'pangloss/vim-javascript'    " javaScript support
+Plug 'leafgarland/typescript-vim' " typeScript syntax
+Plug 'maxmellon/vim-jsx-pretty'   " js and JSX syntax
+Plug 'alvan/vim-closetag'         " closing tags
+Plug 'jparise/vim-graphql'        " graphQL syntax
+Plug 'gruvbox-community/gruvbox'  " colorscheme
+Plug 'jremmen/vim-ripgrep'        " pipGrep
 Plug 'tpope/vim-fugitive'         " git stuff
-Plug 'kien/ctrlp.vim'             " fast search
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 Plug 'lyuts/vim-rtags'            " great for c++
 Plug 'mbbill/undotree'            " epic undo history
 Plug 'vim-airline/vim-airline'    " status line
 Plug 'jiangmiao/auto-pairs'       " auto brackets
-
 call plug#end()
 
 " --- COLORS 
+set termguicolors
+let g:gruvbox_italic=1
+" set background=dark
 colorscheme gruvbox
-set background=dark
 
 " --- FUNCTIONS 
 if executable('rg')
     let g:rg_derive_root='true'
 endif
 
-" --- REMAPS
+" --- REMAPS / SETINGS
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#formatter = 'unique_tail'
-let g:ctrlp_user_command = ['.git/' , 'git --git-dir=%s/.git ls-files -oc --exclude-standard'] 
-let mapleader = " "
-let g:ctrlp_use_caching = 0
+
 let g:netrw_banner = 0
 let g:netrw_liststyle = 3
 let g:netrw_browse_split = 4
 let g:netrw_altv = 1
-let g:coc_global_extensions = [ 'coc-tsserver', 'coc-prettier' ] " TypeScript Support
-let g:gruvbox_sign_column='dark1'
+
+let g:closetag_filenames = '*.html,*.jsx,*.tsx'
+let g:closetag_regions =  {
+\ 'typescript.tsx': 'jsxRegion,tsxRegion',
+\ 'javascript.jsx': 'jsxRegion',
+\ }
+
 :imap jk <Esc>
 :imap kj <Esc>
+
+let mapleader = " "
 nnoremap <silent><leader>1 :source ~/.vimrc \| :PlugInstall<CR>
 nnoremap <leader>q :q<CR> 
 nnoremap <leader>w :w<CR> 
@@ -79,26 +88,30 @@ nnoremap <leader>h :wincmd h<CR>
 nnoremap <leader>j :wincmd j<CR>
 nnoremap <leader>k :wincmd k<CR>
 nnoremap <leader>l :wincmd l<CR>
+
 nnoremap <leader>u :UndotreeShow<CR>
-nnoremap <leader>f :CtrlP<CR>
+
 nnoremap <leader>e :wincmd v<bar> :Ex <bar> :vertical resize 25<CR>
-nnoremap <leader>ps :Rg<SPACE>
-nnoremap <leader>ghw :h <C-R>=expand("<cword>")<CR><CR>
-nnoremap <leader>prw :CocSearch <C-R>=expand("<cword>")<CR><CR>
 nnoremap <silent> <leader>- :vertical resize +15<CR>
 nnoremap <silent> <leader>+ :vertical resize -15<CR>
-" CoC Remaps
+
+let g:fzf_preview_window = ['right:50%', 'ctrl-/']
+let g:fzf_buffers_jump = 1
+
+nnoremap <leader>f :Files<CR>
+nnoremap <leader>ps :Rg<SPACE>
+
+let g:coc_global_extensions = [ 'coc-tsserver', 'coc-prettier' ] " TypeScript Support
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
-" Remap keys for applying codeAction to the current line.
 nmap <leader>ac  <Plug>(coc-codeaction)
-" Apply AutoFix to problem on the current line.
 nmap <leader>af  <Plug>(coc-fix-current)
-" Rename variables (local || global)
-nnoremap rv gd[{V%::s/<C-R>///gc<left><left><left>
-nnoremap rvg gD:%s/<C-R>///gc<left><left><left>
+nnoremap <leader>prw :CocSearch <C-R>=expand("<cword>")<CR><CR>
+nnoremap <leader>ghw :h <C-R>=expand("<cword>")<CR><CR>
 
 " --- AUTO-COMMANDS 
 command! -nargs=0 Prettier :CocCommand prettier.formatFile
+command! -bang -nargs=? -complete=dir Files
+    \ call fzf#vim#files(<q-args>, {'options': ['--layout=reverse', '--info=inline', '--preview', '~/.vim/plugged/fzf.vim/bin/preview.sh {}']}, <bang>0)
