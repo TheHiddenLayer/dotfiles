@@ -1,0 +1,11 @@
+#!/bin/sh
+
+git submodule update --init --recursive
+
+stow -t /etc etc # symbolically link to `/etc`
+stow bash
+stow xorg
+stow local
+stow suckless
+stow nvim
+stow kitty
