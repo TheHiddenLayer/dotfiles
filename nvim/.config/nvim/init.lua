@@ -1,7 +1,8 @@
 -- Basic settings
 vim.g.mapleader = ","
 vim.g.maplocalleader = ","
-vim.wo.wrap = false
+vim.wo.linebreak = true
+vim.wo.wrap = true
 vim.opt.cursorline = true
 vim.opt.mouse = ""
 vim.opt.ignorecase = false

@@ -8,9 +8,10 @@ export DOTFILES=$HOME/dotfiles
 export EDITOR=nvim
 export BROWSER=firefox
 export GOPATH=$HOME/go
+export GOOS="linux"
+export GOARCH="amd64"
 export PATH=$GOPATH/bin:$PATH
 export PATH="$HOME/bin:$PATH"
-export PATH=$PATH:~/roc_nightly-linux_x86_64-2025-03-04-3da0934
 
 function jwtd() {
   local input="${1:-}"
@@ -63,7 +64,8 @@ alias e=nvim
 alias ls='ls --color=auto'
 alias g=git
 alias d=docker
-alias b='bazelisk'
+alias b='./bazel'
+# alias b='USE_BAZEL_VERSION=7.4.0 bazelisk'
 alias v=vault
 alias lg=lazygit
 alias bc="${EDITOR} ~/.bashrc"
