@@ -8,8 +8,6 @@ export DOTFILES=$HOME/dotfiles
 export EDITOR=nvim
 export BROWSER=firefox
 export GOPATH=$HOME/go
-export GOOS="linux"
-export GOARCH="amd64"
 export PATH=$GOPATH/bin:$PATH
 export PATH="$HOME/bin:$PATH"
 
